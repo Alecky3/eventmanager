@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts</title>
+    <link rel="stylesheet" href="bootstrap-5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.css">
+    <link rel="stylesheet" href="home.css">
+    <script src="popper.js"></script>
+    <script src="bootstrap-5/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <!--
+   <div class="alert alert-light border border-light border-1 shadow-sm rounded d-flex p-2 flex-column w-25 h-25 position-relative" id="composeemail">
+     <input type="text" id="senderemail" class="visually-hidden" name="email" value="alex@gmail.com">
+     <button class="btn-close position-absolute top-0 end-0"></button>
+     <div class="input-container d-flex flex-column p-2 my-2">
+         <label for="subject" class="form-label">Subject</label>
+         <input type="text" name="subject" id="subject" class="form-control p-2 my-2">
+     </div>
+     <div class="input-container d-flex flex-column p-2 my-2">
+      <label for="message" class="form-label">Message</label>
+      <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+      
+     </div>
+     <button class="btn btn-sm btn-success align-self-end me-2 my-2" id="sendemailbtn">Send</button>
+   </div>
+   <script>
+     var alert=document.getElementById("composeemail")
+     var sendEmailBtn=document.getElementById("sendemailbtn");
+     sendEmailBtn.addEventListener("click",function(){
+       var sender=document.querySelector("#composeemail #senderemail").value;
+       var subject=document.querySelector("#composeemail #subject").value;
+       var message=document.querySelector("#composeemail #message").value
+       console.log(sender,subject,message);
+     })
+   </script>
+  -->
+  <div class="alert bg-white border border-light rounded shadow-sm position-relative w-50" id="event-update-alert">
+    <button class="btn-close position-absolute top-0 end-0 m-2" id="update-event-close"></button>
+    <div class="container-fluid border border-light border-2 rounded rounded p-2">
+      <div class="event-cover-photo-img-container" style="width: 100%;height: 300px;">
+        <img src="../eventmanager/Images/Doctors/dr10.jpg" alt="" style="min-width: 50%;height: 100%;">
+      </div>
+      <div class="d-flex my-2 border border-light border-2 rounded align-items-center">
+        <label for="" class="form-label m-2 text-nowrap">Upload Event Cover Photo</label>
+        <input type="file" class="form-control m-2 " id="update-cover-photo">
+      </div>
+    </div>
+    <div class="d-flex my-2 p-2 align-items-center border border-light border-2 rounded">
+      <lable class="form-label mx-2 p-2 text-nowrap">Title</lable>
+      <input type="text" name="event-update-title" id="event-update-title" class="form-control p-2">
+  </div>
+    <div class="d-flex my-2 p-2 align-items-center border border-light border-2 rounded">
+        <lable class="form-label mx-2 p-2 text-nowrap">Event Date</lable>
+        <input type="datetime-local" class="form-control p-2">
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2">Event Description</label>
+      <textarea name="event-update-description" id="event-update-description" cols="30" rows="5"  class="form-control"></textarea>
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2 text-nowrap">Event Category</label>
+      <select name="event-update-category" id="event-update-category" class="form-control p-2 my-2" multiple></select>
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2 text-nowrap">Event Subcategories</label>
+      <select name="event-update-subcategory" id="event-update-subcategory" class="form-control" multiple></select>
+    </div>
+    <button class="btn btn-success p-2" id="update-event-submit"><div class="spinner-border spinner-border-sm"></div> Update</button>
+  </div>
+</body>
+</html>

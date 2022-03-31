@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/bootstrap-5/css/bootstrap.min.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/fontawesome/css/all.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/home11.css' %}">
+    {% load static %}
+    <script src="{% static 'eventmanager/popper.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/jquery-3.5.1.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/jquery.jcarousel.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/bootstrap-5/js/bootstrap.min.js' %}"></script>
+
+</head>
+<body>
+   
+    <nav class="navbar navbar-expand-md navbar-light bg-light flex-column fixed-top border border-bottom border-1 border-light">
+        <div class="container-fluid">
+            <div class="nav-logo d-flex justify-content-center align-items-center">
+                <div class="nav-logo-container">
+                    <img src="{% static 'Images/ccloud.png' %}" alt="" width="36" height="36">
+                </div>
+                <span class="navbar-brand ms-2">Events Manager</span>
+            </div>
+            <form action="" class="d-flex flex-grow-1 mx-sm-2">
+                <input type="search" class="form-control rounded-start" placeholder="Search Here" style="border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;">
+                <button class="btn btn-sm btn-dark" style="border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;">Search</button>
+            </form>
+            <button class="navbar-toggler m-2" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse " id="navbarCollapse">
+                 <ul class="navbar-nav align-items-md-center w-100">
+                     <li class="nav-item ms-2 my-2 my-md-0 ">
+                        <a href="{% url  'eventmanager:home' %}" class="navbar-link text-decoration-none ">Home</a>
+                     </li>
+                     <li class="nav-item ms-2 my-2 my-md-0 ms-md-auto">
+                        <a href="{% url 'eventmanager:login' %}" class="nav-link btn btn-sm btn-primary ">Login</a>
+                     </li>
+                     <li class="nav-item ms-2 my-2 my-md-0">
+                        <a href="{% url 'eventmanager:signup' %}" class="nav-link btn btn-lg btn-outline-primary ">Register for Free</a>
+                     </li>
+                 </ul>  
+            </div>
+        </div>  
+    </nav>
+     <!--start  of main slider-->
+    <div class="mainslider position-relative" style="margin-top: 64px;">
+        <div class="main-slider-left d-flex flex-column flex-grow-1 position-absolute top-50 left-50">
+            <div class="p-4">
+                <span class="lead text-white">
+                    Access Medical Services Easily with our New Paltform.
+                    
+                </span>
+            </div>
+         <a href="#" role="button" class="btn btn-lg getstarted-btn">Get Started Here<i class="fas fa-chevron-right"></i></a>
+        </div>
+        <div class="main-slider-right p-2 bg-light">
+            <div class="carousel slide" data-bs-ride="carousel" id="main-slider-carousel">
+                <div class="carousel-inner position-relative">
+                      {% for sliderImg in mainslider_images %}
+                        {% if forloop.counter0 == 0%}
+                      <div class="carousel-item  active position-relative">
+                        <div class="carousel-img-container">
+                            <img src="{{sliderImg.cover_photo.url}}" class="w-100" alt="">
+                        </div>
+                        <div class="carousel-caption  bg-info">
+                           
+                           <h5>{{sliderImg.title}}</h5>
+                           <p>{{sliderImg.description}}</p>
+                         </div>
+                      </div>
+                      {% else %}
+                      <div class="carousel-item position-relative">
+                        <div class="carousel-img-container">
+                            <img src="{{sliderImg.cover_photo.url}}" class="w-100" alt="">
+                        </div>
+                        <div class="carousel-caption  bg-primary bg-primary">
+                            <h5>{{sliderImg.title}}</h5>
+                            <p>{{sliderImg.description}}</p>
+                         </div>
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                      
+                 </div>
+                 <button class="carousel-control-prev bg-info top-50 rounded-pill" style="width: 40px !important;height: 40px !important;margin-left: 5px; z-index: 1000;" type="button" data-bs-target="#main-slider-carousel" data-bs-slide="prev">
+                     <span class="carousel-control-prev-icon" arial-hidden=true ></span>
+                 </button>
+                 <button class="carousel-control-next bg-info top-50 rounded-pill" type="button" style="width: 40px !important;height: 40px !important;margin-left: 5px;z-index: 1000;" data-bs-target="#main-slider-carousel" data-bs-slide="next">
+                     <span class="carousel-control-next-icon"></span>
+                 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of main slider-->
+    <!--start of main content -->
+    <div class="main-content container-fluid" style="background: whitesmoke;">
+        {% for category in categories %}
+          {% if forloop.counter0 == 1%}
+             {% if category.event_set.all.count > 0%}
+                        <!--new Category-->
+        <div class="border-top border-4 border-dark my-3"></div>
+        <div class="event-category-container">
+            <div class="category-header d-flex justisy-content-between align-items-center py-3 ">
+                <div class="category-header-left d-flex align-items-center">
+                    <h3>{{category.name}}</h3>
+                    <i class="fas fa-chevron-right ms-3"></i>
+                </div>
+                <div class="category-header-right ms-auto">
+                    <a href="#" class="view-all text-decoration-none me-2">View All</a>
+                </div>
+            </div>
+            <div class="category-content d-block py-2">
+                <!--start of jcarousel-->
+                <div class="jcarousel-container">
+                    <div class="jcarousel-controls d-flex justify-content-between">
+                        <a href="#" class="jcarousel-prev text-decoration-none p-2 bg-info rounded-start" style="z-index: 10;"><i class="fas fa-arrow-circle-left text-light"></i></a>
+                        <a href="#" class="jcarousel-next text-decoration-none p-2 bg-info rounded-end" style="z-index: 10;"><i class="fas fa-arrow-circle-right text-light"></i></a>
+                    </div>
+                <div class="jcarousel">
+                <div class="jcarousel-inner jcarousel-single">
+                    {% for e in category.event_set.all %}
+                    <div class="category-content-left card shadow-sm">
+                        <div class="category-left-img-container card-img-top">
+                            <img src="{{e.cover_photo.url}}" alt="">
+                        </div>
+                        <div class="category-left-body card-body">
+                            <span class="card-text">{{e.description}}</span>
+                        </div>
+                        <div class="card-footer  bg-white">
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                </div>
+                 </div>
+                </div>
+                <!--end of jcarousel -->
+            </div>
+        </div>
+             {% endif %}
+          {% elif forloop.counter0 == 2%}
+                     <!--Advertisements -->
+        <div class="container-fluid">
+         <div class="border-top border-4 border-dark my-3"></div>
+         <h4 class="">Advertisements</h4>
+         <div class="advertisements-container p-2">
+            <div class="advertisements-left d-flex flex-column justify-content-between align-items-center">
+                  <p class="lead p-3">
+                     You've Got event that you want to let people Know. Create an Account to post your 
+                     Events so that the intended Audience can know.
+                  </p>
+                  <a href="" role="button" class="btn btn-outline-primary btn-lg getstarted-btn">Get Started Here<i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="adverisements-right">
+                <div class="d-flex">
+                    <h4 class="">Upcoming Events</h4>
+                    <i class="fas fa-chevron-left p-2 ms-auto text-light"></i>
+                    <i class="fas fa-chevron-right p-2 me-2 text-light"></i>
+                </div>
+                <div class="carousel slide" id="advertisements-slider" data-bs-ride="carousel"style="overflow: hidden !important;height: 300px !important" >
+                    <div class="carousel-inner w-100 h-100" style="overflow: hidden !important;">
+                        {% for s in mainslider_images %}
+                        {% if forloop.counter == 1%}
+                        <div class="carousel-item active">
+                            <img src="{{s.cover_photo.url}}" class="img" style="width: 100%;height: 100%;"  alt="">
+                            
+                        </div>
+                        {% else %}
+                        <div class="carousel-item">
+                            <img src="{{s.cover_photo.url}}" class="" style="width: 100%;height: 100%;"  alt="">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        
+                        <button class="carousel-control-prev bg-info top-50 rounded-pill" style="width: 40px !important;height: 40px !important;margin-left: 5px; z-index: 1000;" type="button" data-bs-target="#advertisements-slider" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" arial-hidden=true ></span>
+                        </button>
+                        <button class="carousel-control-next bg-info top-50 rounded-pill" type="button" style="width: 40px !important;height: 40px !important;margin-left: 5px;z-index: 1000;" data-bs-target="#advertisements-slider" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                      
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>  
+        </div>
+         <!--end of advertisements-->
+          {% elif forloop.counter0 == 3%}
+             {% if category.event_set.all.count > 0%}
+
+              <!--new Category-->
+         
+         <div class="event-category-container position-relative p-2">
+            <div class="border-top border-4 border-dark m-2"></div>
+            <a href="#" class="jcarousel-prev text-decoration-none position-absolute top-50 start-0 p-2 bg-info rounded-start" style="z-index: 10;"><i class="fas fa-arrow-circle-left text-light"></i></a>
+            <a href="#" class="jcarousel-next text-decoration-none position-absolute top-50 end-0 p-2 bg-info rounded-end" style="z-index: 10;"><i class="fas fa-arrow-circle-right text-light"></i></a>
+             <div class="category-header d-flex justisy-content-between align-items-center py-3 ">
+                 <div class="category-header-left d-flex align-items-center">
+                     <h3 class="">{{category.name}}</h3>
+                     <i class="fas fa-chevron-right ms-3"></i>
+                 </div>
+                 <div class="category-header-subcategories">
+                    <ul class="nav flex-row">
+                        {% for sb in category.eventsubcategories_set.all %}
+                        <li class="nav-item alert-info mx-2 rounded"><a href="#" class="nav-link">{{sb.name}}</a></li>
+                        {% endfor %}
+                        
+                    </ul>
+                </div>
+                 <div class="category-header-right ms-auto">
+                     <a href="#" class="view-all text-decoration-none me-2">View All</a>
+                 </div>
+             </div>
+             <div class="category-content d-block p-2">
+                 <div class="jcarousel">
+                 <div class="jcarousel-inner">
+                 {% for e in category.event_set.all %}
+                 <div class="category-content-left card shadow-sm">
+                    <div class="category-left-img-container card-img-top">
+                        <img src="{{e.cover_photo.url}}" alt="">
+                    </div>
+                    <div class="category-left-body card-body">
+                        <span class="card-text">{{e.description}}</span>
+                    </div>
+                    <div class="card-footer  bg-white">
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                 {% endfor %}
+                 </div>
+               </div> 
+                 
+                
+             </div>
+             {% endif%}
+          {% else %}
+           {% if category.event_set.all.count > 0%}
+          <div class="event-category-container">
+            <div class="category-header d-flex justisy-content-between align-items-center py-3">
+                <div class="category-header-left d-flex align-items-center">
+                    <h3>{{category.name}}</h3>
+                    <i class="fas fa-chevron-right ms-3"></i>
+                </div>
+                <div class="category-header-subcategories">
+                    <ul class="nav flex-row">
+                        {% for sc in category.eventsubcategories_set.all%}
+                        <li class="nav-item alert-info rounded mx-2"><a href="#" class="nav-link">{{sc.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="category-header-right ms-auto">
+                    <a href="#" class="view-all text-decoration-none me-2">View All</a>
+                </div>
+            </div>
+            <div class="category-content">
+                <!--start of jcarousel-->
+                <div class="jcarousel-container position-relative">
+                    <div class="jcarousel-controls d-flex justify-content-between">
+                        <a href="#" class="jcarousel-prev text-decoration-none"><i class="fas fa-arrow-circle-left"></i></a><a href="#" class="jcarousel-next text-decoration-none"><i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                <div class="jcarousel">
+                <div class="jcarousel-inner category-left">
+                     
+                     {% for e in category.event_set.all %}
+                       <!--start of jcarousel item-->  
+                     <div class="category-content-left card">
+                        <div class="category-left-img-container card-img-top">
+                            <img src="{{e.cover_photo.url}}" alt="">
+                        </div>
+                        <div class="category-left-body card-body">
+                            <span class="card-text">{{e.description}}</span>
+                        </div>
+                        <div class="card-footer  bg-white">
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                     {% endfor %}
+                 <!--end of jcarousel item-->
+                                    
+                </div>
+                </div>
+                </div>
+                <!--end of jcarousel-->
+                <div class="category-content-right">
+                    <!--start o of jcarousel-->
+                    <div class="jcarousel-container position-relative">
+                        <a href="#" class="jcarousel-prev text-decoration-none position-absolute top-50 start-0 p-3 rounded-pill bg-info" style="z-index: 10;"><i class="fas fa-arrow-circle-left text-light"></i></a>
+                        <a href="#" class="jcarousel-next text-decoration-none position-absolute top-50 end-0 p-3 rounded-pill bg-info" style="z-index: 10;"><i class="fas fa-arrow-circle-right text-light"></i></a>
+                    <div class="jcarousel">
+                    <div class="jcarousel-inner">
+                        {% for sc in category.eventsubcategories_set.all %}
+                          {% if sc.event_set.count > 0%}
+                        <div class="category-right-subcategory-container">
+                            {% for e in sc.event_set.all %}
+                                {% if forloop.counter0 < 3 %}
+                                <div class="card mb-2">
+                                    <div class="card-img-top">
+                                        <img src="{{e.cover_photo.url}}" alt="">
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="card-text">{{e.description}}</span>
+                                    </div>
+                                    <div class="card-footer border-0 bg-white">
+                                     <a href="#" class="btn">View Details</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                           
+                     </div> 
+                     
+                     {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+                </div>
+                <!--end of jcarousel-->
+                </div>
+            </div>
+        </div>
+          {% endif %}
+          {% endif %}
+        {% endfor %}
+        
+         <div class="container-fluid py-4">
+            <div class="event-list-container position-relative">
+                <ul class="nav">
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="#" class="nav-link text-light">Sports</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Celebrity</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Music</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Movies</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Cinema</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Weddings</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Birthdays</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">FootBall</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Gamming</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Rugby</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">School Festivals</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">University</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Politics</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Adventure</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Touring</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Fitness</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Commedy</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">College</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">High School</a></li>
+                    <li class="nav-item btn btn-info shadow-sm m-2"><a href="" class="nav-link text-light">Volleyball</a></li>
+                </ul>
+            </div>
+         </div>
+         </div>
+        <footer class="main-footer bg-light">
+            <div class="footer-top d-flex justify-content-between py-3">
+                <div class="footer-top-left flex-fill">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Home</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Support</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-top-center flex-fill">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Advertise</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Get Started</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Our News Letter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-top-right flex-fill">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Facebook <i class="fab fa-facebook"></i></a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Twitter <i class="fab fa-twitter"></i></a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Whatsapp <i class="fab fa-whatsapp"></i></a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Instagram <i class="fab fa-instagram"></i></a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-dark">Linkedin <i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex justify-content-center align-items-center py-4 bg-white">
+                 <span>&copy; Copyright 2021 </span>
+            </div>
+        </footer>
+         <script>
+             $(document).ready(function(){
+                $(function(){
+                $(".jcarousel").jcarousel()
+                $(".jcarousel-prev").jcarouselControl({
+                    target: "-=1"
+                })
+                $(".jcarousel-next").jcarouselControl({
+                    target: "+=1"
+                })
+            })
+             });
+         </script>
+</body>
+</html>

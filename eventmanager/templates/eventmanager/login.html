@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/bootstrap-5/css/bootstrap.min.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/fontawesome/css/all.css' %}">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/login.css' %}">
+    {% load static %}
+    <script src="{ static 'eventmanager/popper.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/bootstrap-5/js/bootstrap.min.js' %}"></script>
+</head>
+<body class="h-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column fixed-top border border-bottom border-1 border-light">
+        <div class="nav-top container-fluid flex-column flex-md-row">
+            <div class="nav-logo d-flex justify-content-center align-items-center">
+                <div class="nav-logo-container">
+                    <img src="Images/ccloud.png" alt="" width="36" height="36">
+                </div>
+                <span class="navbar-brand ms-2">Events Manager</span>
+            </div>
+            
+            <div class="d-flex nav-top-right flex-column flex-sm-row flex-grow-1 align-items-center">
+                <form action="" class="d-flex flex-grow-1 mx-sm-2">
+                    <input type="search" class="form-control rounded-start" placeholder="Search Here">
+                    <button class="btn btn-sm btn-dark">Search</button>
+                </form>
+                <a href="{% url 'eventmanager:home' %}" class="navbar-link text-decoration-none mx-md-2">Home</a>
+                <a href="{% url 'eventmanager:login' %}" class="nav-link btn btn-sm btn-primary mx-md-2 my-2 my-sm-0">Login</a>
+                <a href="{% url 'eventmanager:signup' %}" class="nav-link btn btn-lg btn-outline-primary my-2 my-sm-0">Register for Free</a>
+            </div>
+            
+        </div>
+        
+    </nav>
+    <div class="container-fluid signup-container w-100 h-100 " style="background: linear-gradient(45deg,whitesmoke 50%, white 50%);margin-top: 64px;">
+        <div class="signup-form-container d-flex justify-content-center align-items-center w-100 h-100">
+            <div class="signup-left d-none d-md-flex p-3 bg-light  flex-column " style="color: #dee2e6;
+            min-height: 300px;
+            background: linear-gradient(
+        45deg, #198754, #09121f);
+        ">
+                   <p class="lead">Platform That lets you Plan and Post events so As to reach as more audience as Possible free of Charge. </p>
+                   <p class="lead">Post Your Events here and let People Know. It's Easy Like Never. Just Need To have an Account.</p>
+                   <a href="{% url 'eventmanager:signup'%}" class="btn btn-lg btn-outline-success mt-auto align-self-center text-light">Dont have An Account SignUp Here</a>
+            </div>
+            <form action="{% url 'eventmanager:login'%}" method="POST" class="d-flex flex-column position-relative p-2 bg-white rounded border border-light shadow-lg py-2 px-2 mx-md-2" style="min-width: 40%;">
+                {% csrf_token %}
+                {% if error %}
+                <div class="alert alert-danger p-2 text-center position-absolute top-0 start-0 rounded w-100 " role="alert" data-bs-dismissible="true" style="z-index: 10;">
+                    <span>{{error}}</span>
+                    <button class="btn-close position-absolute" role="alert" data-bs-dismiss="alert"></button>
+                </div>
+              {% endif %}
+                <span class="lead align-self-center my-5">Login Here</span>
+                <div class="input container d-flex flex-column flex-md-row m-2 p-2">
+                    <label for="" class="form-label m-2">Email</label>
+                    <input type="email" name="email" id="email" class="form-control py-2" placeholder="Your Email i.e example@gmail.com">
+                </div>
+                <div class="input container d-flex flex-column flex-md-row m-2 p-2">
+                    <label for="" class="form-label m-2">Password</label>
+                    <input type="password" name="password" id="password" class="form-control py-2" placeholder="Your Password">
+                </div>
+               
+                <button class="btn btn-primary btn-lg mt-3">Login</button>
+            </form>
+           
+        </div>
+    </div>
+</body>
+</html>

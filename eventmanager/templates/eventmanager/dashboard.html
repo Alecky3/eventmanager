@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/bootstrap-5/css/bootstrap.min.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/fontawesome/css/all.css' %}">
+
+    {% load static %}
+    <script src="{% static 'eventmanager/popper.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/bootstrap-5/js/bootstrap.min.js' %}"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/dashboard2.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'eventmanager/jquery.dataTables.min.css' %}">
+    {% load static %}
+    <script src="{% static 'eventmanager/bootstrap-5/js/bootstrap.min.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/jquery-3.5.1.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/jquery.jcarousel.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'eventmanager/datatables.min.js' %}"></script>
+
+   
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light flex-column fixed-top border border-bottom border-1 border-light">
+        <div class="container-fluid">
+            <div class="nav-logo d-flex justify-content-center align-items-center">
+                <div class="nav-logo-container">
+                    <img src="{% static 'eventmanager/Images/ccloud.png' %}" alt="" width="36" height="36">
+                </div>
+                <span class="navbar-brand ms-2">Events Manager</span>
+            </div>
+            <form action="" class="d-flex flex-grow-1 mx-sm-2">
+                <input type="search" class="form-control rounded-start" placeholder="Search Here" style="border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;">
+                <button class="btn btn-sm btn-dark" style="border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;">Search</button>
+            </form>
+            <button class="navbar-toggler m-2" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse " id="navbarCollapse">
+                 <ul class="navbar-nav align-items-md-center w-100">
+                     
+                     <li class="nav-item ms-2 my-2 my-md-0 ms-auto">
+                        <a href="{% url 'eventmanager:login' %}" class="nav-link btn btn-lg btn-outline-primary ">Log Out</a>
+                     </li>
+                 </ul>  
+            </div>
+        </div>  
+    </nav>
+    <div class="main-content">
+        <div class="main-left">
+            <ul class="nav nav-tabs flex-column h-100" role="tablist">
+                <li class="nav-item my-2" role="presentation">
+                    <a href="#" class="nav-link text-dark active " role="tab" data-bs-toggle="tab" data-bs-target="#profile">Your Profile</a>
+                </li>
+                <li class="nav-item my-2" role="presentation">
+                <li class="nav-item " role="presentation">
+                    <a href="#" class="nav-link text-dark" role="tab" data-bs-toggle="tab" data-bs-target="#events">Events</a>
+                </li>
+                <li class="nav-item my-2" role="presentation">
+                    <a href="" class="nav-link text-dark" role="tab" data-bs-toggle="tab" data-bs-target="#bookings">Booking</a>
+                </li>
+                <li class="nav-item my-2" role="presentation">
+                    <a href="" class="nav-link text-dark" role="tab" data-bs-toggle="tab" data-bs-target="#messages">Messages</a>
+                </li> 
+                <li class="nav-item my-2" >
+                    <a href="{% url 'eventmanager:login' %}" class="nav-link text-dark">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-right">
+            <div class="tab-content h-100">
+                  <div class="tab-pane fade show active px-3 py-4 h-100" id="profile">
+                        <form enctype="multipart/form-data" action="{% url 'eventmanager:updateprofile' user.email %}" method="POST" class="d-flex position-relative flex-column h-100">
+                            {% csrf_token %}
+                            {% if error %}
+                            <div class="alert alert-danger p-2 text-center position-absolute top-0 start-0 rounded" role="alert" data-bs-dismissible="true" style="z-index: 10;">
+                                <span>{{error}}</span>
+                                <button class="btn-close" role="alert" data-bs-dismiss="alert"></button>
+                            </div>
+                          {% endif %}
+                            <div class="d-flex flex-column flex-md-row p-2 mb-3 border border-light border-2">
+                                <div class="controls-container d-flex flex-column  p-2" style="height: max-content;">
+                                    <label for="" class="form-label text-nowrap p-2">Choose Photo</label>
+                                    <input type="file" name="profile_image" id="profile_image" class="form-control" placeholder="Profile Image">
+                                </div>
+                                <div class="profile-img-container bg-light p-1 rounded-pill ms-3" style="width: 160px;height: 120px;">
+                                    {% if profile_image %}
+                                    <img src="{{user.profile_image.url}}" class="rounded-pill" id="profileimg" alt="" style="width: 100%;height: 100%;">
+                                    {% else %}
+                                    <img src="{% static 'Images/user.svg'%}" class="rounded-pill" id="profileimg" alt="" style="width: 100%;height: 100%;">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="shadow-sm py-4 d-flex flex-column-reverse flex-md-row border border-light">
+                                <div class="flex-grow-1">
+                                    <div class="controls-container d-flex flex-column flex-md-row p-2">
+                                        <label for="" class="form-label text-nowrap p-2">First Name</label>
+                                        <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" value="{{user.first_name}}">
+                                    </div>
+                                    <div class="controls-container d-flex flex-column flex-md-row p-2">
+                                        <label for="" class="form-label text-nowrap p-2">Last Name</label>
+                                        <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" value="{{user.last_name}}">
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="shadow-sm py-4 mt-5 border border-light">
+                                <div class="controls-container d-flex flex-column flex-md-row p-2">
+                                    <label for="" class="form-label text-nowrap p-2">Email</label>
+                                    <input type="text" name="email" id="email" class="form-control" placeholder="Your Email" value="{{user.email}}">
+                                </div>
+                                <div class="controls-container d-flex flex-column flex-md-row p-2">
+                                    <label for="" class="form-label text-nowrap p-2">Phone</label>
+                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="Last Name" value="{{user.phone}}">
+                                </div>
+                            </div>
+                            <button class="btn btn-lg btn-outline-success align-self-end me-2 p-2 mt-5" type="submit">Submit</button>
+                        </form>
+                  </div>
+                  <div class="tab-pane fade p-3" id="events">
+             <!--post product-->
+         <div class="alert alert-light border border-light shadow-lg fade-show w-50 position-absolute top-25 start-25 d-none" id="postAlertDlg" role="alert" data-bs-dismissible="false" style="z-index: 100;">
+        <button class="btn-close position-absolute top-0 end-0 m-1"></button>
+        <div class="container-fluid mt-3">
+          <form enctype="multipart/form-data" action="{% url 'eventmanager:uploadevent' user.email %}" method="POST" class="d-flex flex-column p-2 border border-light">
+            {% csrf_token %}
+            <div class="d-flex flex-column p-2 py-2">
+             <div class="img-container">
+               <img src="" id="postImage" alt="" style="width: 100%;max-height: 300px;">
+             </div>
+             <input type="file" name="cover_photo" id="postEventFileInput" class="form-control my-2">
+           </div>
+             <div class="input-container d-flex flex-column flex-md-row">
+               <label for="title" class="form-label p-2 m-2">Title</label>
+               <input type="text" name="title" id="title" class="form-control p-2 m-2">
+             </div>
+             <div class="input-container d-flex flex-column">
+               <label for="description" class="form-label p-2 m-2">Event Description</label>
+               <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
+             </div>
+             <div class="input-container d-flex flex-column flex-md-row my-3">
+               <label for="title" class="form-label p-2 m-2">Category</label>
+               <select name="category" id="category" class="form-control" multiple>
+                   {% for c in categories %}
+                     <option value="{{c.pk}}">{{c.name}}</option>
+                   {% endfor %}
+               </select>
+             </div>
+             <div class="input-container d-flex flex-column flex-md-row my-3">
+               <label for="title" class="form-label p-2 m-2">Sub Categories</label>
+               <select name="subcategory" id="subcategory" class="form-control" multiple>
+                {% for sb in subcategories %}
+                  <option value="{{sb.pk}}">{{sb.name}}</option>
+                {% endfor %}
+               </select>
+             </div>
+             <button class="btn btn-lg btn-success my-2" type="submit">Post</button>
+         </form>
+        </div>
+      </div>   
+      <!--end of post alert-->
+                      <div class="d-flex justify-content-between">
+                          <div class="d-flex">
+                            <h5 class="p-2">Recent Events</h5>
+                            <ul class="nav nav-tabs mb-2">
+                                <li class="nav-item"><a href="#" class="nav-link text-dark" role="tab" data-bs-toggle="tab" data-bs-target="#recentevents-gridview"><i class="fas fa-list"></i></a></li>
+                                <li class="nav-item"><a href="#" class="nav-link text-dark" role="tab" data-bs-toggle="tab" data-bs-target="#recenteventstableview"><i class="fas fa-th"></i></a></li>
+                            </ul>
+                          </div>
+                        
+                        <button class="btn btn-small btn-success mb-3" id="postEventBtn">Post New Event</button>
+                      </div>
+                      <div class="tab-content">
+                          
+                      <div class="recent-events-container position-relative tab-pane fade show active" role="tabpanel" id="recentevents-gridview">
+                        {% for category,events in userevents.items %}
+                        <div class="container-fluid">
+                        <h4 class="p-2">{{category}}</h4>
+                        <div class="position-relative">
+                            <a href="#" class="jcarousel-prev d-flex justisy-content-center align-items-center bg-info position-absolute top-50 left-0 p-3 rounded-start text-decoration-none" style="z-index: 10;transform: translateY(-47px);"><i class="fas fa-chevron-left text-light"></i></a>
+                            <a href="#" class="jcarousel-next d-flex justisy-content-center align-items-center bg-info position-absolute top-50 end-0 p-3 rounded-end text-decoration-none" style="z-index: 10;transform: translateY(-47px);"><i class="fas fa-chevron-right text-light"></i></a>
+                           
+                           <div class="recent-jcarousel-container ">
+                               
+                               <div class="jcarousel recent-events-jcarousel">
+                                   <div class="jcarousel-inner">
+                                       {% for e in events %}
+                                       <div class="jcarousel-item border border-light border-1" >
+                                        <div class="recent-events-img-container " style="width: 100%;height: 50%;">
+                                            <img src="{{e.cover_photo.url}}" class="h-100 w-100" alt="">
+                                         </div>
+                                         <div class="jcarousel-details d-flex flex-column justisy-content-between" style="width: 100%;height: 50%;">
+                                         <div class="event-delails p-2">
+                                             <p>{{e.title}}</p>
+                                             <p>{{e.description}}</p>
+                                         </div>
+                                         <div class="d-flex mt-auto">
+                                             <a href="#" class="btn bnt-sm btn-success m-2 update-event" data-user="{{user.email}}" data-id="{{e.pk}}">Update</a>
+                                             <a href="#" class="btn bnt-sm btn-danger m-2 delete-event" data-id="{{e.pk}}">Delete</a>
+                                             
+                                         </div>
+                                        </div>
+                                       </div>
+                                       {% endfor %}
+                                       
+                                   </div>
+                               </div>
+                           </div>
+                           <!--end of first carousel-->
+                             
+                          </div>
+                          </div>
+                          {% endfor %}
+                          </div>
+
+                          <!--end of grid view-->
+                          <div class="recent-events-gridview tab-pane" role="tabpanel" id="recenteventstableview">
+                              <div class="container-fluid py-3 border border-light rounded shadow-sm">
+                                  {% for category,events in userevents.items %}
+                                    <div class="container-fluid border border-light rounded my-2">
+                                        <h5 class="p-2 border-bottom border-light border-2">{{category}}</h5>
+                                        <table class="display w-100 border border-light ">
+                                            <thead>
+                                                <tr>
+                                                    <td>Title</td>
+                                                    <td>Description</td>
+                                                    <td>Event Date</td>
+                                                    <td>Time Posted</td>
+                                                    <td>Actions</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for e in events %}
+                                                  <tr>
+                                                      <td>{{e.title}}</td>
+                                                      <td>{{e.description}}</td>
+                                                      <td>{{e.event_date}}</td>
+                                                      <td>{{e.time_posted}}</td>
+                                                      <td class="d-flex flex-column align-items-center">
+                                                          <button class="btn btn-sm btn-success my-1 update-event-table" data-id="{{e.pk}}" data-user="{{user.email}}">Update</button>
+                                                          <button class="btn btn-sm btn-danger my-1 delete-event-table" data-id="{{e.pk}}">Delete</button>
+                                                          
+                                                      </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                  {% endfor %}
+                                
+                              </div>
+                          </div>
+                          
+                         
+                      </div>
+                      
+                  </div>
+                  <div class="tab-pane fade p-3" id="messages">
+                      <div class="container-fluid d-flex flex-column align-items-center">
+                          
+                          {% for msg in messages %}
+                          <div class="card border shadow-sm border border-light botrder-1 border-light px-2 py-3 mx-2 my-3">
+                              <div class="card-header border-0 bg-white border-bottom d-flex justify-content-between border-bottom border-1 border-light">
+                                  <span>{{msg.date}}</span>
+                                  <div class="d-flex">
+                                      <button class="btn btn-sm btn-danger message-delete" data-id="{{msg.pk}}">Delete</button>
+                                  </div>
+                              </div>
+                              <div class="card-body">
+                                  <p class="card-text">{{msg.message}}</p>
+                              </div>
+                          </div>
+                          {% endfor %}
+                          
+                        
+                        
+                        
+                          
+                          
+                          
+                          
+                      </div>
+                  </div>
+                  <div class="tab-pane fade p-3 w-100 h-100" id="bookings">
+                      <div class="container-fluid w-100 h-100">
+                          <ul class="nav nav-tabs" role="tablist">
+                              <li class="nav-item flex-fill" role="presentation">
+                                  <a href="#userbookings" class="nav-link" role="tab" data-bs-toggle="tab">Your Bookings</a>
+                                </li>
+                                <li class="nav-item flex-fill" role="presentation">
+                                    <a href="#allevents" class="nav-link" role="tab" data-bs-toggle="tab">All Events</a>
+                                  </li>
+                              <li class="nav-item flex-fill" role="presentation">
+                                  <a href="#usereventsbookings" class="nav-link" role="tab" data-bs-toggle="tab">Your Events Bookings</a>
+                              </li>
+                          </ul>
+                          <div class="container-fluid border-start border-end h-100 w-100 border-light border-2">
+                              <div class="tab-content">
+                                  <!--Start of events planning to attend-->
+                                  <div class="tab-pane fade show active" role="tabpanel" id="userbookings">
+                                      <div class="container-fluid">
+                                          <h5 class="lead border-bottom border-light border-1 p-2 mb-2">Events Planning to attennd</h5>
+                                          {% for c,events in planningtoattend.items%}
+                                          <div class="border border-light border-1 mb-3">
+                                            <div class="category-header d-flex justify-content-between">
+                                                <h4 class="p-2">{{c}}</h4>
+                                                
+                                            </div>
+                                              <table class="display w-100">
+                                                  <thead>
+                                                      <tr>
+                                                          <td>Event</td>
+                                                          <td>Event Date</td>
+                                                          <td>Details</td>
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                      {% for ue in events %}
+                                                        <tr>
+                                                            <td>{{ue.event.title}}</td>
+                                                            <td>{{ue.event.description}}</td>
+                                                             <td>{{ue.event.event_date}}</td>
+                                                        </tr>
+                                                      {% endfor %}
+                                                  </tbody>
+                                              </table>
+                                            </div>
+                                            {% endfor %}
+                                      </div>
+                                  </div>
+                                  <!--End of events planning to attend-->
+
+                                  <!--All Events-->
+                                  <div class="container-fluid p-2 my-2 tab-pane fade" role="tabpanel" id="allevents">
+                                      <div class="container-fluid search-area">
+                                          <div class="d-flex p-2 my-2">
+                                              <input type="search" class="form-control " style="box-shadow: none !important;border: 1px solid #e0e0e0 !important;">
+                                              <button class="btn btn-sm btn-light " style="border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;">Search</button>
+                                          </div>
+                                          <div class="container-fluid all-events-container">
+                                              {% for c,eventslist in eventcategories.items %}
+                                              <div class="category">
+                                                  <div class="category-header d-flex justify-content-between">
+                                                      <h3 class="lead p-2 my-2">{{c}}</h3>
+                                                      <div class="d-flex mx-2">
+                                                          <a href="#" class="jcarousel-prev"><i class="fas fa-chevron-left text-success"></i></a>
+                                                          <a href="#" class="jcarousel-next"><i class="fas fa-chevron-right text-success mx-2"></i></a>
+                                                        </div>
+                                                  </div>
+                                                  <div class="container-fluid">
+                                                      <div class="jcarousel-container">
+                                                          <div class="jcarousel">
+                                                              <div class="jcarousel-inner" style="grid-template-rows: minmax(400px,600px) !important;">
+                                                                  {% for e in eventslist %}
+                                                                  <div class="jcarousel-item">
+                                                                      <div class="jcarousel-img-container" style="width: 100%;height: 60%;">
+                                                                          <img src="{{e.cover_photo.url}}" alt="">
+                                                                      </div>
+                                                                      <div class="event-details">
+                                                                          <span class="lead d-block">{{e.title}}</span>
+                                                                          <span class="small d-block"><span>Time Posted: </span>{{e.time_posted}}</span>
+                                                                          <span class="small d-block"><span>Event Date: </span>{{e.event_date}}</span>
+                                                                          <span class="small d-block"><span>Posted By: </span>{{e.user}}</span>
+                                                                          <p>{{e.description}}</p>
+                                                                         <button class="btn btn-lg btn-primary book-event" data-id="{{e.pk}}" data-email="{{e.user.email}}">Add your List</button>
+                                                                      </div>
+                                                                  </div>
+                                                                  {% endfor %}
+                                                                  
+  
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              {% endfor %}
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!--End of all events-->
+
+                                  <!--start of events Your Booked events-->
+                                  <div class="tab-pane fade" role="tabpanel" id="usereventsbookings">
+                                      <!--compose email alert-->
+                                    <div class="alert alert-light border border-light border-1 fade show shadow-lg rounded d-flex p-2 flex-column  d-none position-absolute top-25 left-50" id="composeemail" style="z-index: 100;min-height: 500px;">
+                                        <input type="text" id="senderemail" class="visually-hidden" name="email" value="{{user.email}}">
+                                        <button class="btn-close position-absolute top-0 end-0" id="sendemailbtnclose"></button>
+                                        <div class="input-container d-flex flex-column p-2 my-2">
+                                            <label for="subject" class="form-label">Subject</label>
+                                            <input type="text" name="subject" id="subject" class="form-control p-2 my-2">
+                                        </div>
+                                        <div class="input-container d-flex flex-column p-2 my-2">
+                                         <label for="message" class="form-label">Message</label>
+                                         <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                                         
+                                        </div>
+                                        <button class="btn btn-sm btn-success align-self-end me-2 my-2" id="sendemailbtn">Send</button>
+                                      </div>
+                                      <!--end of compose email alert-->
+                                    <div class="container-fluid">
+                                        <div class="header d-flex justify-content-between border-bottom border-light border-1 p-2 mb-2">
+                                            <h5 class="lead ">Users Planning to Attend your Events</h5>
+                                            
+                                        </div>
+                                      
+                                        {% for c,events in youreventbookings.items%}
+                                        <div class="border border-light border-1 mb-3">
+                                            <div class="category-header d-flex justify-content-between">
+                                                <h4 class="p-2">{{c}}</h4>
+                                                <button class="btn btn-info me-2 my-2 notify">Nofity</button>
+                                            </div>
+                                            <table class="display w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Event</td>
+                                                        <td>Event Date</td>
+                                                        <td>user Email</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for ue in events %}
+                                                      <tr>
+                                                          <td>{{ue.event.title}}</td>
+                                                          <td>{{ue.event.description}}</td>
+                                                           <td class="user_email">{{ue.user.email}}</td>
+                                                      </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                          </div>
+                                          {% endfor %}
+                                    </div>
+                                  </div>
+                                   <!--End of events Your Booked events-->
+                              </div>
+                          </div>
+                      </div>
+                  </div>   
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("table").dataTable()
+            $(function(){
+                $(".jcarousel").jcarousel()
+                $(".jcarousel-prev").jcarouselControl({
+                    target: "-=1"
+                })
+                $(".jcarousel-next").jcarouselControl({
+                    target: "+=1"
+                })
+            });
+
+            $("#postEventBtn").click(function(){
+                  $("#postAlertDlg").toggleClass("d-none")
+            })
+            var closeBtn= $("#postEventBtn .btn-close");
+            console.log(closeBtn);
+            $(".btn-close").click(function(){
+                $("#postAlertDlg").toggleClass("d-none")
+            })
+
+            var postfileInput=document.getElementById("postEventFileInput");
+            var postImg=document.getElementById("postImage")
+            postfileInput.addEventListener("change",function(){
+                var file=this.files[0]
+                var url=URL.createObjectURL(file)
+                postImg.src=url
+            })
+
+            var imageInput=document.getElementById("profile_image")
+            var profileImg=document.getElementById("profileimg")
+            imageInput.addEventListener("change",function(){
+                var file=this.files[0]
+               
+                var url=URL.createObjectURL(file)
+                profileImg.src=url
+                
+                // URL.revokeObjectURL(url)
+            })
+           
+            //notify users
+            var emailalert=document.getElementById("composeemail")
+              var sendEmailBtn=document.getElementById("sendemailbtn");
+                sendEmailBtn.addEventListener("click",function(){
+                  var sender=document.querySelector("#composeemail #senderemail").value;
+                 var subject=document.querySelector("#composeemail #subject").value;
+                var message=document.querySelector("#composeemail #message").value
+                  
+                    function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+                }
+                  const csrftoken = getCookie('csrftoken');
+                          $.ajax({
+                        url:"/eventmanager/testmail/",
+                        method: "POST",
+                        data:{
+                            "sender":sender,
+                            "user_emails":emailList.join(","),
+                            "subject":subject,
+                            "message":message
+                        },
+                        headers:{
+                            "X-CSRFToken":csrftoken
+                        }
+                    }).done(function(response){
+                        console.log(response.success);
+                    }).fail(function(){
+                        console.log("failed fetching");
+                    });
+                  
+                });
+
+             $("#sendemailbtnclose").click(function(){
+                 $(emailalert).toggleClass("d-none")
+             })
+
+            //
+            var userEmails;
+            var emailList=[];
+            var notifyBtns=document.querySelectorAll(".notify");
+            notifyBtns.forEach(btn=>{
+                btn.addEventListener("click",function(){
+                    var scrollY=window.scrollY
+                    $(emailalert).css("top",`${scrollY+150}px`)
+                    $(emailalert).css("right","50px");
+
+                    $(emailalert).toggleClass("d-none")
+                    userEmails=$(event.target).parent().parent().find(".user_email")
+                    
+                    $.each(userEmails,function(i,elem){
+                      emailList.push($(elem).text())
+                    })
+                   
+                })
+            })
+            //book event
+             var bookEventBtns=document.querySelectorAll(".book-event");
+             var allevents=document.getElementById("allevents");
+             bookEventBtns.forEach(btn=>{
+                 btn.addEventListener("click",bookevent)
+             })
+             function bookevent(event){
+                 var eId=event.target.getAttribute("data-id");
+                 var uEmail=event.target.getAttribute("data-email");
+                 var scrollY=window.scrollY
+                function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+                }
+                  const csrftoken = getCookie('csrftoken');
+                  $.ajax({
+                      url:"/eventmanager/bookevent/",
+                      method: "POST",
+                      headers:{
+                          "X-CSRFToken":csrftoken
+                      },
+                      data:{
+                          "event_id": eId,
+                          "user_email": uEmail
+                      }
+                  }).done(function(result){
+                      console.log(result.data);
+                      $(allevents).append( `<div class="alert alert-success shadow-sm border border-light border-1 position-absolute  left-0 w-100 p-4" style="z-index:2000;top: ${scrollY+200}px; width: max-content !important;" role="alert" data-bs-dismissible="true">
+                          <button class="btn-close position-absolute top-0 end-0" role="alert" data-bs-dismiss="alert"></button>
+                          <span class="lead">${result.data}</span>
+                        </div>
+                        `);
+                  }).fail(function(err){
+                      console.log(err);
+                      $(allevents).append( `<div class="alert alert-info shadow-sm border border-light border-1 position-absolute  left-0 w-100 p-4" style="z-index:2000;top: ${scrollY+200}px;width: max-content !important;" role="alert" data-bs-dismissible="true">
+                        <button class="btn-close position-absolute top-0 end-0" role="alert" data-bs-dismiss="alert"></button>
+                        <span class="lead">${result.data}</span>
+                        </div>
+                        `);
+                  })
+             }
+            //end book event
+
+            //delete event
+             var daleteEventBtn=document.querySelectorAll(".delete-event");
+             daleteEventBtn.forEach(btn=>{
+                 btn.addEventListener("click",deleteevent)
+             })
+             function deleteevent(event){
+                   var eventId=event.target.getAttribute("data-id")
+                   $(event.target).parent().parent().parent().remove()
+                   function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+                }
+                  const csrftoken = getCookie('csrftoken');
+                  $.ajax({
+                      url:"/eventmanager/deleteevent/",
+                      method:"POST",
+                      headers:{
+                          "X-CSRFToken":csrftoken
+                      },
+                      data:{
+                          "event_id":eventId
+                      }
+                  }).done(function(result){
+                      console.log(result.data);
+                  }).fail(function(err){
+                      console.log(err);
+                  })
+
+             }
+             //delete event table
+             var daleteEventBtnTable=document.querySelectorAll(".delete-event-table");
+             daleteEventBtnTable.forEach(btn=>{
+                 btn.addEventListener("click",deleteeventtable)
+             })
+             function deleteeventtable(event){
+                 console.log("clicked");
+                   var eventId=event.target.getAttribute("data-id")
+                   $(event.target).parent().parent().remove()
+                   function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+                }
+                  const csrftoken = getCookie('csrftoken');
+                  $.ajax({
+                      url:"/eventmanager/deleteevent/",
+                      method:"POST",
+                      headers:{
+                          "X-CSRFToken":csrftoken
+                      },
+                      data:{
+                          "event_id":eventId
+                      }
+                  }).done(function(result){
+                      console.log(result.data);
+                  }).fail(function(err){
+                      console.log(err);
+                  })
+
+             }
+             //end delete event table
+            //end delete event
+             
+            //delete message
+              var deletemessageBts=document.querySelectorAll(".message-delete")
+              deletemessageBts.forEach(btn=>{
+                  btn.addEventListener("click",deleteEvent)
+              })
+              function deleteEvent(event){
+                      var messageId=event.target.getAttribute("data-id")
+                      $(event.target).parent().parent().parent().remove()
+                      function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+                }
+                  const csrftoken = getCookie('csrftoken');
+                  $.ajax({
+                      url:"/eventmanager/deletemessage/",
+                      method:"POST",
+                      headers:{
+                          "X-CSRFToken":csrftoken
+                      },
+                      data:{
+                          "message_id":messageId
+                      }
+                  }).done(function(result){
+                      console.log(result.data);
+                  }).fail(function(err){
+                      console.log(err);
+                  })
+              }
+            //end delete message
+
+            //start update event
+              var updateEventBtns=document.querySelectorAll(".update-event");
+              updateEventBtns.forEach(btn=>{
+                  btn.addEventListener("click",updateEvent)
+              })
+              //update table
+              var updateEventBtnsTable=document.querySelectorAll(".update-event-table");
+              updateEventBtnsTable.forEach(btn=>{
+                  btn.addEventListener("click",updateEventTable)
+              })
+              function updateEvent(event){
+                  event.preventDefault()
+                  var selectedOptions=[];
+                  var selectedSuboptions=[];
+                  
+                  var imgsrc=$(event.target).closest(".jcarousel-item").find("img").attr("src")
+                  console.log(parent);
+                    //create update dialog
+                    var updateAlert=document.createElement("div");
+                    updateAlert.classList.add("alert","bg-white","border",
+                    "border-light","rounded","shadow-lg","w-50","position-absolute");
+                    updateAlert.setAttribute("id","event-update-alert");
+                    updateAlert.innerHTML=`
+                    <button class="btn-close position-absolute top-0 end-0 m-2" id="update-event-close"></button>
+    <div class="container-fluid border border-light border-2 rounded rounded p-2">
+      <div class="event-cover-photo-img-container" style="width: 100%;height: 300px;">
+        <img src="${imgsrc}" alt="" style="min-width: 50%;height: 100%;" id="update-event-img">
+      </div>
+      <div class="d-flex my-2 border border-light border-2 rounded align-items-center">
+        <label for="" class="form-label m-2 text-nowrap">Upload Event Cover Photo</label>
+        <input type="file" class="form-control m-2 " id="update-event-cover-photo">
+      </div>
+    </div>
+    <div class="d-flex my-2 p-2 align-items-center border border-light border-2 rounded">
+      <lable class="form-label mx-2 p-2 text-nowrap">Title</lable>
+      <input type="text" name="event-update-title" id="event-update-title" class="form-control p-2">
+  </div>
+    <div class="d-flex my-2 p-2 align-items-center border border-light border-2 rounded">
+        <lable class="form-label mx-2 p-2 text-nowrap">Event Date</lable>
+        <input type="datetime-local" class="form-control p-2" id="event-update-date">
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2">Event Description</label>
+      <textarea name="event-update-description" id="event-update-description" cols="30" rows="5"  class="form-control"></textarea>
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2 text-nowrap">Event Category</label>
+      <select name="event-update-category" id="event-update-category" class="form-control p-2 my-2" multiple></select>
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2 text-nowrap">Event Subcategories</label>
+      <select name="event-update-subcategory" id="event-update-subcategory" class="form-control" multiple></select>
+    </div>
+    <button class="btn btn-success p-2" id="update-event-submit"><div class="spinner-border spinner-border-sm d-none" id="update-event-submit-spinner"></div> Update</button>
+                    `;
+            var scrollY=window.scrollY
+            var jUpdateAlert=$(updateAlert)
+            $(jUpdateAlert).css({
+                "top":scrollY+100+"px",
+                "z-index":2000,
+                "height":"600px",
+                "overflow-y":"scroll"
+            })
+            $(document.body).find("#event-update-alert").remove();
+            $(document.body).append(updateAlert);
+            var closeBtn=document.getElementById('update-event-close');
+            var imageInput=document.getElementById("update-event-cover-photo");
+            var image=document.getElementById("update-event-img");
+            var imagesrc="";
+            var eventTitle=document.getElementById("event-update-title");
+            var eventDescription=document.getElementById("event-update-description");
+            var eventDate=document.getElementById("event-update-date");
+            var eventId=event.target.getAttribute("data-id");
+
+            imageInput.addEventListener("change",function(){
+                var file=this.files[0]
+                var url=URL.createObjectURL(file);
+                image.src=url
+                imagesrc=file.name
+                console.log("image path: ",imagesrc);
+            })
+            closeBtn.addEventListener("click",function(){
+                document.body.removeChild(updateAlert)
+            })
+             $.ajax({
+                 url:"/eventmanager/getcategories/",
+
+             }).done(function(result){
+                var eventCategory=result.data
+                var eventCategorySelect=document.getElementById("event-update-category");
+                // eventCategorySelect.selectedIndex=0
+                selectedOptions.push(eventCategorySelect.selectedIndex)
+                console.log(selectedOptions);
+                eventCategorySelect.addEventListener("change",function(){
+                    var currentOptions=Array.from(eventCategorySelect.selectedOptions);
+                    selectedOptions=[]
+                    currentOptions.forEach(option=>{
+                        selectedOptions.push(option.value)
+                    })
+                
+                    console.log(selectedOptions);
+                    
+                })
+                eventCategory.forEach(elem=>{
+                     var option=document.createElement("option")
+                     option.innerText=elem[1]
+                     option.value=elem[0]
+                     eventCategorySelect.appendChild(option)
+                })
+             }).fail(function(err){
+                 console.log(err);
+             })
+             //subcategories
+             $.ajax({
+                 url:"/eventmanager/getsubcategories/",
+
+             }).done(function(result){
+                var eventCategory=result.data
+                var eventCategorySelect=document.getElementById("event-update-subcategory");
+                // eventCategorySelect.selectedIndex=0
+                selectedSuboptions.push(eventCategorySelect.selectedIndex)
+                eventCategorySelect.addEventListener("change",function(){
+                    var currentOptions=Array.from(eventCategorySelect.selectedOptions);
+                    selectedSuboptions=[]
+                    currentOptions.forEach(option=>{
+                        selectedSuboptions.push(option.value)
+                    })
+                
+                    console.log(selectedSuboptions);
+                    
+                })
+                eventCategory.forEach(elem=>{
+                     var option=document.createElement("option")
+                     option.innerText=elem[1]
+                     option.value=elem[0]
+                     eventCategorySelect.appendChild(option)
+                })
+             }).fail(function(err){
+                 console.log(err);
+             })
+             //update btn
+             var updateBtn=document.getElementById("update-event-submit")
+             
+                function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+             updateBtn.addEventListener("click",function(){
+                 console.log(selectedOptions);
+                 $("#update-event-submit-spinner").toggleClass("d-none")
+                 $.ajax({
+                     url:"/eventmanager/updateevent/",
+                     method:"POST",
+                     headers:{
+                        "X-CSRFToken":csrftoken
+                     },
+                     data:{
+                         "event_id":eventId,
+                         "event_title":eventTitle.value,
+                         "event_description":eventDescription.value,
+                         "event_date":eventDate.value,
+                         "event_category":selectedOptions.join(","),
+                         "event_subcategory":selectedSuboptions.join(","),
+                        //  "cover_photo":imageInput.files[0].webkitRelativePath
+                     }
+                 }).done(function(result){
+                     console.log(result.data);
+                 }).fail(function(err){
+                     console.log(err);
+                 })
+             })
+            //end update doalog
+              }
+
+              //update table
+              function updateEventTable(event){
+                  event.preventDefault()
+                  var eventId=event.target.getAttribute("data-id");
+                  var selectedOptions=[];
+                  var selectedSuboptions=[];
+                  $.ajax({
+                      url:"/eventmanager/geteventimage/",
+                      data:{
+                          "event_id":eventId
+                      }
+                  }).done(function(result){
+                      var img=document.getElementById("update-event-img");
+                      img.src=result.data
+                  }).fail(function(err){
+                      console.log(err);
+                  })
+                  console.log(parent);
+                    //create update dialog
+                    var updateAlert=document.createElement("div");
+                    updateAlert.classList.add("alert","bg-white","border",
+                    "border-light","rounded","shadow-lg","w-50","position-fixed");
+                    updateAlert.setAttribute("id","event-update-alert");
+                    updateAlert.innerHTML=`
+                    <button class="btn-close position-absolute top-0 end-0 m-2" id="update-event-close"></button>
+    <div class="container-fluid border border-light border-2 rounded rounded p-2">
+      <div class="event-cover-photo-img-container" style="width: 100%;height: 300px;">
+        <img src="" alt="" style="min-width: 50%;height: 100%;" id="update-event-img">
+      </div>
+      <div class="d-flex my-2 border border-light border-2 rounded align-items-center">
+        <label for="" class="form-label m-2 text-nowrap">Upload Event Cover Photo</label>
+        <input type="file" class="form-control m-2 " id="update-event-cover-photo">
+      </div>
+    </div>
+    <div class="d-flex my-2 p-2 align-items-center border border-light border-2 rounded">
+      <lable class="form-label mx-2 p-2 text-nowrap">Title</lable>
+      <input type="text" name="event-update-title" id="event-update-title" class="form-control p-2">
+  </div>
+    <div class="d-flex my-2 p-2 align-items-center border border-light border-2 rounded">
+        <lable class="form-label mx-2 p-2 text-nowrap">Event Date</lable>
+        <input type="datetime-local" class="form-control p-2" id="event-update-date">
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2">Event Description</label>
+      <textarea name="event-update-description" id="event-update-description" cols="30" rows="5"  class="form-control"></textarea>
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2 text-nowrap">Event Category</label>
+      <select name="event-update-category" id="event-update-category" class="form-control p-2 my-2" multiple></select>
+    </div>
+    <div class="d-flex p-2 my-2 flex-column border border-light border-2 rounded">
+      <label for="" class="form-label p-2 my-2 text-nowrap">Event Subcategories</label>
+      <select name="event-update-subcategory" id="event-update-subcategory" class="form-control" multiple></select>
+    </div>
+    <button class="btn btn-success p-2" id="update-event-submit"><div class="spinner-border spinner-border-sm d-none" id="update-event-submit-spinner"></div> Update</button>
+                    `;
+            var scrollY=window.scrollY
+            var jUpdateAlert=$(updateAlert)
+            $(jUpdateAlert).css({
+                "top":scrollY+100,
+                "z-index":2000,
+                "height":"600px",
+                "overflow-y":"scroll"
+            })
+            $(document.body).find("#event-update-alert").remove();
+            $(document.body).append(updateAlert);
+            var closeBtn=document.getElementById('update-event-close');
+            var imageInput=document.getElementById("update-event-cover-photo");
+            var image=document.getElementById("update-event-img");
+            var imagesrc="";
+            var eventTitle=document.getElementById("event-update-title");
+            var eventDescription=document.getElementById("event-update-description");
+            var eventDate=document.getElementById("event-update-date");
+          
+
+            imageInput.addEventListener("change",function(){
+                var file=this.files[0]
+                var url=URL.createObjectURL(file);
+                image.src=url
+                imagesrc=file.name
+                console.log("image path: ",imagesrc);
+            })
+            closeBtn.addEventListener("click",function(){
+                document.body.removeChild(updateAlert)
+            })
+             $.ajax({
+                 url:"/eventmanager/getcategories/",
+
+             }).done(function(result){
+                var eventCategory=result.data
+                var eventCategorySelect=document.getElementById("event-update-category");
+                // eventCategorySelect.selectedIndex=0
+                selectedOptions.push(eventCategorySelect.selectedIndex)
+                console.log(selectedOptions);
+                eventCategorySelect.addEventListener("change",function(){
+                    var currentOptions=Array.from(eventCategorySelect.selectedOptions);
+                    selectedOptions=[]
+                    currentOptions.forEach(option=>{
+                        selectedOptions.push(option.value)
+                    })
+                
+                    console.log(selectedOptions);
+                    
+                })
+                eventCategory.forEach(elem=>{
+                     var option=document.createElement("option")
+                     option.innerText=elem[1]
+                     option.value=elem[0]
+                     eventCategorySelect.appendChild(option)
+                })
+             }).fail(function(err){
+                 console.log(err);
+             })
+             //subcategories
+             $.ajax({
+                 url:"/eventmanager/getsubcategories/",
+
+             }).done(function(result){
+                var eventCategory=result.data
+                var eventCategorySelect=document.getElementById("event-update-subcategory");
+                // eventCategorySelect.selectedIndex=0
+                selectedSuboptions.push(eventCategorySelect.selectedIndex)
+                eventCategorySelect.addEventListener("change",function(){
+                    var currentOptions=Array.from(eventCategorySelect.selectedOptions);
+                    selectedSuboptions=[]
+                    currentOptions.forEach(option=>{
+                        selectedSuboptions.push(option.value)
+                    })
+                
+                    console.log(selectedSuboptions);
+                    
+                })
+                eventCategory.forEach(elem=>{
+                     var option=document.createElement("option")
+                     option.innerText=elem[1]
+                     option.value=elem[0]
+                     eventCategorySelect.appendChild(option)
+                })
+             }).fail(function(err){
+                 console.log(err);
+             })
+             //update btn
+             var updateBtn=document.getElementById("update-event-submit")
+             
+                function getCookie(name) {
+                     let cookieValue = null;
+                     if (document.cookie && document.cookie !== '') {
+                     const cookies = document.cookie.split(';');
+                     for (let i = 0; i < cookies.length; i++) {
+                      const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                 }
+                }
+               }
+                    return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+             updateBtn.addEventListener("click",function(){
+                 console.log(selectedOptions);
+                 $("#update-event-submit-spinner").toggleClass("d-none")
+                 $.ajax({
+                     url:"/eventmanager/updateevent/",
+                     method:"POST",
+                     headers:{
+                        "X-CSRFToken":csrftoken
+                     },
+                     data:{
+                         "event_id":eventId,
+                         "event_title":eventTitle.value,
+                         "event_description":eventDescription.value,
+                         "event_date":eventDate.value,
+                         "event_category":selectedOptions.join(","),
+                         "event_subcategory":selectedSuboptions.join(","),
+                        //  "cover_photo":imageInput.files[0].webkitRelativePath
+                     }
+                 }).done(function(result){
+                     console.log(result.data);
+                 }).fail(function(err){
+                     console.log(err);
+                 })
+             })
+            //end update doalog
+              }
+            
+        
+        })
+    </script>
+</body>
+</html>

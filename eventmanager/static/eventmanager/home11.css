@@ -1,0 +1,117 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body,html{
+    width: 100%;
+    height: 100%;
+}
+@media (max-width: 768px){
+   .nav-top-right{
+       width: 100%;
+   }
+}
+.main-slider-right{
+    max-height: 400px !important;
+    height: 400px !important;
+    overflow: hidden;
+}
+.main-slider-right img{
+    width: 100%;
+    height: 100% !important;
+}
+.main-slider-right .carousel{
+    width: 100%;
+    height: 100%;
+}
+.main-slider-right .carousel-item,.main-slider-right .carousel-inner{
+    width: 100%;
+    height: 100% !important;
+}
+@media (min-width:768px){
+    
+}
+.category-content{
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 10px;
+    grid-template-rows: minmax(400px,500px);
+}
+.category-content-right{
+    /* display: grid; */
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    overflow: hidden;
+}
+.category-content-right .card-img-top{
+    width: 60% !important;
+    height: 80%;
+}
+.category-content-right .card{
+    flex-direction: row;
+    height: calc((100% / 3 ) - 6px);
+}
+.category-content-right .card-img-top img{
+    width: 100% !important;
+    height: 100% !important;
+}
+.category-content-left .category-left-img-container {
+  height: 70%;
+  width: 100%;
+}
+.category-left-img-container img{
+    width: 100%;
+    height: 100%;
+}
+.single{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: minmax(400px,420px);
+}
+.single .category-content-left .category-left-img-container {
+    height: 50%;
+    width: 100%;
+  }
+
+
+.advertisements-container{
+    display: grid;
+   
+}
+@media (min-width: 768px){
+    .advertisements-container{
+        grid-template-columns: repeat(2,1fr);
+    }
+    
+}
+@media (max-width: 768px){
+    .advertisements-container{
+        grid-template-columns: 1fr;
+    }
+    
+}
+.adverisements{
+    background: linear-gradient(to left ,tomato,blue);
+}
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.jcarousel-inner {
+    display: grid;
+    width: 10000em;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    grid-auto-columns: minmax(calc(80vw / 3),calc(100vw / 3));
+    gap: 10px;
+    grid-template-rows: 400px;
+    grid-auto-flow: column;
+}
+.jcarousel-inner.jcarousel-single{
+    grid-auto-columns: minmax(calc(98vw / 4),calc(98vw /4));
+    grid-template-rows: 400px;
+}

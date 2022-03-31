@@ -1,0 +1,63 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body,html{
+   width: 100%;
+   height: 100%;
+}
+.main-content{
+    width: 100%;
+    height: 100%;
+    margin-top: 64px !important;
+    display: grid;
+    grid-template-columns: repeat(2,20% 80%);
+}
+.main-left .active{
+    background-color: lightblue !important;
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+}
+
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.jcarousel-inner {
+    display: grid;
+    width: 10000em;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    grid-auto-columns: minmax(calc(80vw / 3),calc(100vw / 3));
+    gap: 10px;
+    grid-template-rows: minmax(300px,400px);
+    grid-auto-flow: column;
+}
+.jcarousel-item{
+    /* float: left; */
+}
+.recent-jcarousel-container{
+    height: 400px;
+    display: flex;
+    align-items: center;
+}
+.recent-events-jcarousel .jcarousel-item{
+    /* width: 300px; */
+    /* height: 300px; */
+}
+.recent-events-img-container{
+    width: 100%;
+    height: 60%;
+}
+.jcarousel-inner img{
+    width: 100%;
+    height: 100%;
+}
+#messages .card{
+    width: 80%;
+   box-shadow:  0.125rem .125rem rgba(0,0,0,.025),-0.125rem -0.125rem  rgba(0,0,0,.025);
+}
